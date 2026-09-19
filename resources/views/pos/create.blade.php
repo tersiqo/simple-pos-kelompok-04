@@ -28,18 +28,16 @@
                         <p class="text-sm text-slate-500">
                             Rp {{ number_format($product->price) }}
                         </p>
-                        <!-- Tambahan Tugas Langkah 12 milikmu: Badge Stok Menipis -->
-                        @if ($product->stock < 10)
-                            <span class="absolute top-2 right-2 bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded-full">
+                        <!-- Tambahan Tugas Langkah 12: Badge Stok Menipis -->
+                       @if ($product->stock < 10)
+                            <span class="inline-block mt-2 bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded-md">
                                 Stok Menipis
                             </span>
                         @endif
                     </div>
                 @endforeach
             </div>
-                    </div>
-                
-            </div>
+                    
 
             <div class="mt-4 border-t pt-3">
                 <template x-for="item in cart" :key="item.id">
@@ -60,13 +58,5 @@
             </div>
         </div>
 
-        <div class="mt-4 border-t pt-3">
-            <template x-for="item in cart" :key="item.id">
-                <p x-text="item.name + ' - Rp ' + item.price"></p>
-            </template>
-            <p class="font-semibold mt-2">
-                Subtotal: Rp <span x-text="subtotal()"></span>
-            </p>
-        </div>
     </div>
 @endsection
