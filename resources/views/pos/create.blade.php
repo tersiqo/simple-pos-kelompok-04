@@ -38,7 +38,7 @@
                 @endforeach
             </div>
                     </div>
-                @endforeach
+                
             </div>
 
             <div class="mt-4 border-t pt-3">
