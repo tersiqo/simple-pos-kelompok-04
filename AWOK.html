@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body {
+    background-color: #2b2b2b;
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+    margin: 0;
+  }
+  .paper {
+    background: #fbf9f1;
+    width: 680px;
+    min-height: 820px;
+    padding: 40px 45px 40px 65px;
+    box-shadow: 2px 5px 20px rgba(0,0,0,0.4);
+    position: relative;
+    border-left: 2px solid #e08b8b;
+    background-image: repeating-linear-gradient(transparent, transparent 31px, #d6e2eb 31px, #d6e2eb 32px);
+    line-height: 32px;
+    font-family: 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
+    color: #1a3263;
+    font-size: 15px;
+    transform: rotate(-0.4deg);
+  }
+  h2 {
+    margin: 0 0 10px 0;
+    font-size: 19px;
+    color: #102244;
+    text-decoration: underline;
+  }
+  .meta {
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0 25px 0;
+    font-size: 13.5px;
+  }
+  th, td {
+    border: 1.5px solid #1a3263;
+    padding: 4px 8px;
+    line-height: 22px;
+  }
+  th {
+    background-color: rgba(26, 50, 99, 0.08);
+  }
+  ul {
+    margin: 5px 0;
+    padding-left: 20px;
+  }
+  li {
+    line-height: 30px;
+  }
+</style>
+</head>
+<body>
+
+<div class="paper">
+  <h2>Pertemuan 6: Validasi & Keamanan Input</h2>
+  <div class="meta">
+    Kelompok: Iqo, Yanuar, Iak, Fiza<br>
+    Tanggal: 12 Oktober 2026
+  </div>
+
+  <b>A. Pemetaan Aturan Validasi Form</b>
+  <table>
+    <tr>
+      <th>Form</th>
+      <th>Field</th>
+      <th>Aturan Validasi</th>
+    </tr>
+    <tr>
+      <td rowspan="3">Tambah Produk</td>
+      <td>name</td>
+      <td>wajib, teks, maks 255 karakter</td>
+    </tr>
+    <tr>
+      <td>category_id</td>
+      <td>wajib, harus ada di tabel categories</td>
+    </tr>
+    <tr>
+      <td>price, stock</td>
+      <td>wajib, angka integer, minimal 0</td>
+    </tr>
+    <tr>
+      <td rowspan="3">Transaksi Kasir</td>
+      <td>items</td>
+      <td>wajib, bentuk array, minimal 1 baris</td>
+    </tr>
+    <tr>
+      <td>items.*.product_id</td>
+      <td>wajib, terdaftar di tabel products</td>
+    </tr>
+    <tr>
+      <td>items.*.qty</td>
+      <td>wajib, angka integer, minimal 1</td>
+    </tr>
+  </table>
+
+  <b>B. Kesepakatan Pembagian Tugas Kelompok</b>
+  <ul>
+    <li>Langkah 2: Pasang $fillable model & uji tinker &rarr; <b>Iak</b></li>
+    <li>Langkah 3: StoreProductRequest & form create &rarr; <b>Yanuar</b></li>
+    <li>Langkah 4: Form kasir & StoreTransactionRequest &rarr; <b>Iqo</b></li>
+    <li>Langkah 5: Uji integrasi bersama di tiap laptop &rarr; <b>Semua Anggota</b></li>
+  </ul>
+</div>
+
+</body>
+</html>
