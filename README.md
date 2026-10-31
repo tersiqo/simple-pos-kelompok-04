@@ -57,3 +57,19 @@ Berikut adalah skenario pengujian manual untuk membuktikan pembatasan hak akses 
   Sistem mencegah akses dan otomatis mengarahkan (*redirect*) pengguna kembali ke halaman `/login`.
 
 >**Catatan:** Pengujian manager dapat dilakukan setelah peran ketiga dan aturan aksesnya selesai ditambahkan ke aplikasi. Akun manager juga perlu dibuat terlebih dahulu karena akun demo bawaan hanya menyediakan admin dan kasir.
+
+---
+
+## Pertemuan 9 - Langkah 10: Tugas Mandiri (10.5)
+
+### Identifikasi Proses yang Layak Dipindah ke Queued Job: Pengiriman Struk Transaksi via Email (`SendTransactionReceiptJob`)
+
+Pada alur kasir POS (`TransactionController::store`), setelah transaksi dan detail item berhasil disimpan ke database, proses **pengiriman struk digital via email ke pelanggan** sangat layak dipindahkan ke **queued job**.
+
+**Alasan:**
+1. **Mengurangi Latensi Kasir (Non-blocking I/O):**
+   Koneksi ke server email/SMTP membutuhkan waktu 1–3 detik. Memindahkannya ke queue membuat respons transaksi kasir tetap instan tanpa harus menunggu email terkirim, sehingga antrean kasir tidak tersendat.
+2. **Ketahanan Sistem (*Fault Tolerance & Retry*):**
+   Jika server email pihak ketiga mengalami gangguan sesaat (*network failure*), transaksi penjualan utama di database tetap aman dan tidak dibatalkan. Job pengiriman struk dapat otomatis dicoba ulang di background melalui mekanisme `$tries` dan `$backoff`.
+3. **Pemisahan Tanggung Jawab (*Decoupling*):**
+   Tugas inti transaksi kasir (menyimpan penjualan dan memotong stok) diselesaikan secara sinkron (*ACID*), sedangkan proses notifikasi/struk yang bersifat sekunder didelegasikan ke *background worker*.
