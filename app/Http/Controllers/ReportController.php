@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\SalesReportExport;
 use App\Jobs\ProcessProductImport;
+use App\Models\ImportError;
 use App\Models\Transaction;
 use App\Imports\ProductImport;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -73,7 +74,9 @@ class ReportController extends Controller
 
     public function importForm(): View
     {
-        return view('reports.import');
+        return view('reports.import', [
+            'importErrors' => ImportError::orderBy('row_number')->get(),
+        ]);
     }
 
     public function import(Request $request): RedirectResponse
@@ -107,9 +110,18 @@ class ReportController extends Controller
             'csv' => ['required', 'file', 'mimes:csv,txt'],
         ]);
 
+        ImportError::query()->delete();
+
         $import = new ProductImport();
 
         Excel::import($import, $request->file('csv'));
+
+        foreach ($import->failures() as $failure) {
+            ImportError::create([
+                'row_number' => $failure->row(),
+                'error_message' => implode(' ', $failure->errors()),
+            ]);
+        }
 
         $jumlahGagal = $import->failures()->count();
 
