@@ -10,13 +10,41 @@
         th, td { border: 1px solid #999; padding: 4px 8px; text-align: left; }
         th { background: #eee; }
         .right { text-align: right; }
+        .center { text-align: center; }
     </style>
 </head>
 <body>
     <h1>Laporan Penjualan</h1>
     <p>Periode {{ $from }} s.d. {{ $to }}</p>
     <p>Total penjualan: <strong>Rp {{ number_format($totalPenjualan) }}</strong> dari {{ $jumlahTransaksi }} transaksi</p>
-    <p>50 transaksi terbaru pada periode ini:</p>
+
+    <p style="margin-top: 16px;"><strong>Produk terlaris pada periode ini:</strong></p>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 30px;" class="center">No</th>
+                <th>Nama Produk</th>
+                <th class="right" style="width: 90px;">Terjual</th>
+                <th class="right" style="width: 130px;">Total Penjualan</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($topProducts as $item)
+            <tr>
+                <td class="center">{{ $loop->iteration }}</td>
+                <td>{{ $item->name }}</td>
+                <td class="right">{{ number_format($item->total_qty) }}</td>
+                <td class="right">Rp {{ number_format($item->total_subtotal) }}</td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="4" class="center">Tidak ada data produk terjual pada periode ini.</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    <p style="margin-top: 16px;">50 transaksi terbaru pada periode ini:</p>
     <table>
         <thead>
             <tr>
@@ -27,14 +55,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($transactions as $t)
+            @forelse ($transactions as $t)
             <tr>
                 <td>{{ $t->id }}</td>
                 <td>{{ $t->created_at->format('Y-m-d H:i') }}</td>
                 <td>{{ $t->user->name }}</td>
                 <td class="right">Rp {{ number_format($t->total) }}</td>
             </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="4" class="center">Tidak ada transaksi pada periode ini.</td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
 </body>
