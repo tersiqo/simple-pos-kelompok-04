@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\SalesReportExport;
 use App\Jobs\ProcessProductImport;
 use App\Models\Transaction;
+use App\Imports\ProductImport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -98,5 +99,23 @@ class ReportController extends Controller
     {
         return Transaction::with('user')
             ->whereBetween('created_at', [$from, $to]);
+    }
+
+    public function importExcel(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'csv' => ['required', 'file', 'mimes:csv,txt'],
+        ]);
+
+        $import = new ProductImport();
+
+        Excel::import($import, $request->file('csv'));
+
+        $jumlahGagal = $import->failures()->count();
+
+        return back()->with(
+            'success',
+            "Import Laravel Excel selesai. {$jumlahGagal} baris gagal divalidasi."
+        );
     }
 }
