@@ -20,6 +20,32 @@
     <button type="submit" class="bg-slate-900 text-white px-4 py-2 rounded-md text-sm">Import</button>
 </form>
 
+@if ($importErrors->isNotEmpty())
+    <div class="mt-6 bg-red-50 border border-red-200 rounded-md p-4">
+        <h2 class="text-sm font-semibold text-red-800 mb-2">
+            Baris yang Gagal Di-import ({{ $importErrors->count() }} baris)
+        </h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-red-200 text-red-900">
+                        <th class="py-2 pr-4 font-medium w-28">Nomor Row</th>
+                        <th class="py-2 font-medium">Pesan Error</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-red-100 text-red-700">
+                    @foreach ($importErrors as $err)
+                        <tr>
+                            <td class="py-2 pr-4 font-mono">Baris {{ $err->row_number }}</td>
+                            <td class="py-2">{{ $err->error_message }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endif
+
 <div class="mt-6 border-t pt-4">
     <h1 class="text-lg font-semibold mb-3">
         Import Produk Menggunakan Laravel Excel
