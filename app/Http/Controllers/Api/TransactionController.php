@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\TransactionResource;
+use Illuminate\Support\Facades\Gate;
 
 class TransactionController extends Controller
 {
@@ -45,5 +47,10 @@ class TransactionController extends Controller
                 'total' => $transaction->total,
             ],
         ], 201);
+    }
+    public function show(Transaction $transaction)
+    {
+        Gate::authorize('view', $transaction);
+        return new TransactionResource($transaction);
     }
 }
