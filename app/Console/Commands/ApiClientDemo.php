@@ -37,13 +37,16 @@ class ApiClientDemo extends Command
 
         $backoff = fn (int $attempt) => $attempt * 1000;
 
+        $this->info('Mencoba login dengan kata sandi yang salah...');
         $login = Http::acceptJson()->post("{$baseUrl}/api/login", [
             'email' => 'kasir@pos.test',
-            'password' => 'password',
+            'password' => 'password_salah',
         ]);
 
         if ($login->failed()) {
-            $this->error('Login gagal: '.$login->json('message'));
+            $this->error('Login gagal (HTTP '.$login->status().'): '.$login->json('message'));
+            $this->warn('Eksekusi dihentikan pada langkah pertama, mencegah request produk & transaksi 
+            berjalan dengan token kosong.');
             return self::FAILURE;
         }
 

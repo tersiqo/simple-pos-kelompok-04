@@ -95,3 +95,17 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+
+
+# ==============================================================================
+# PERBANDINGAN PENGALAMAN PENGUJIAN: POSTMAN VS CURL
+# ==============================================================================
+# Pengujian ketiga endpoint API (/api/login, /api/products, /api/transactions) 
+# menggunakan Postman memberikan pengalaman pengujian yang jauh lebih interaktif 
+# dan intuitif dibandingkan curl di terminal. Pengaturan header Authorization 
+# Bearer, Idempotency-Key, serta form payload JSON dapat dikelola secara visual 
+# tanpa risiko kesalahan escaping tanda kutip atau syntax shell. Format response 
+# JSON juga otomatis ditampilkan rapi (pretty-print) lengkap dengan status code 
+# dan waktu latensi. Namun, curl tetap memiliki keunggulan utama dalam hal 
+# kecepatan eksekusi cepat, portabilitas langsung di server headless, serta 
+# kemudahan integrasi ke dalam skrip otomasi bash.
