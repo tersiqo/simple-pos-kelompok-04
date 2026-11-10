@@ -3,7 +3,7 @@ info:
   title: Simple POS API
   version: 1.0.0
 paths:
-  /api/login:
+  /api/v1/login:
     post:
       summary: Login dan dapatkan token
       requestBody:
@@ -31,7 +31,7 @@ paths:
                 type: object
                 properties:
                   message: { type: string }
-  /api/products:
+  /api/v1/products:
     get:
       summary: Mengambil daftar produk
       description: Mengambil daftar produk dengan pagination, filter, dan pengurutan.
@@ -117,10 +117,10 @@ paths:
 
         '401':
           description: Token autentikasi tidak valid atau tidak tersedia.
-
+          
         '422':
           description: Parameter permintaan tidak valid.
-  /api/transactions:
+  /api/v1/transactions:
     post:
       summary: Buat transaksi baru
       security:
