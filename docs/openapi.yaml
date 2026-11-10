@@ -33,12 +33,54 @@ paths:
                   message: { type: string }
   /api/v1/products:
     get:
-      summary: Ambil daftar produk
+      summary: Mengambil daftar produk
+      description: Mengambil daftar produk dengan pagination, filter, dan pengurutan.
       security:
         - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: Nomor halaman yang ingin ditampilkan.
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+
+        - name: per_page
+          in: query
+          required: false
+          description: Jumlah produk yang ditampilkan per halaman.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 15
+
+        - name: category_id
+          in: query
+          required: false
+          description: Filter produk berdasarkan ID kategori.
+          schema:
+            type: integer
+
+        - name: q
+          in: query
+          required: false
+          description: Kata kunci pencarian produk.
+          schema:
+            type: string
+
+        - name: sort
+          in: query
+          required: false
+          description: Pengurutan data produk sesuai pilihan yang didukung API.
+          schema:
+            type: string
+
       responses:
         '200':
-          description: Daftar produk
+          description: Data produk berhasil ditampilkan.
           content:
             application/json:
               schema:
@@ -49,12 +91,35 @@ paths:
                     items:
                       type: object
                       properties:
-                        id: { type: integer }
-                        name: { type: string }
-                        price: { type: integer }
-                        category: { type: string }
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        price:
+                          type: integer
+                        category:
+                          type: string
+                  links:
+                    type: object
+                    description: Tautan navigasi pagination.
+                  meta:
+                    type: object
+                    description: Informasi pagination.
+                    properties:
+                      current_page:
+                        type: integer
+                      last_page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total:
+                        type: integer
+
         '401':
-          description: Token tidak ada atau tidak valid
+          description: Token autentikasi tidak valid atau tidak tersedia.
+          
+        '422':
+          description: Parameter permintaan tidak valid.
   /api/v1/transactions:
     post:
       summary: Buat transaksi baru

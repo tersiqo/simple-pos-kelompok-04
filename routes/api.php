@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\TransactionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\CategoryController;
 
 Route::prefix('v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
@@ -13,5 +14,6 @@ Route::prefix('v1')->group(function () {
         Route::get('/products', [ProductController::class, 'index'])->middleware('abilities:products:read');
         Route::post('/transactions', [TransactionController::class, 'store'])->middleware(['abilities:transactions:create', 'idempotent']);
         Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->middleware('abilities:transactions:read');
+        Route::get('/categories', [CategoryController::class, 'index']);
     });
 });
